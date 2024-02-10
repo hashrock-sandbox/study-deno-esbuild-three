@@ -4,7 +4,8 @@
   },
   "imports": {
     "esbuild": "https://deno.land/x/esbuild@v0.20.0/mod.js",
-    "three": "https://esm.sh/three@0.161.0"
+    "three": "https://esm.sh/three@0.161.0",
+    "three.meshline": "https://esm.sh/meshline@3.2.0"
   },
   "lock": false
 }

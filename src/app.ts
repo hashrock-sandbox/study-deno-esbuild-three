@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { MeshLineGeometry, MeshLineMaterial } from "three.meshline";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -7,31 +8,61 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000,
 );
+scene.background = new THREE.Color(0xFAFAFA);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(globalThis.window.innerWidth, globalThis.window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const mat = new MeshLineMaterial({
+  color: new THREE.Color(0x000000),
+  lineWidth: 1,
+  resolution: new THREE.Vector2(
+    globalThis.window.innerWidth,
+    globalThis.window.innerHeight,
+  ),
+});
 
-camera.position.z = 5
+const points: THREE.Vector3[] = [];
 
-function animate() {
+let freq = 500;
+let width = 0.01;
+
+for (let i = 0; i < 1000; i++) {
+  points.push(new THREE.Vector3(i * 0.01 - 5, Math.cos(i * 3.14 / 100), 0));
+}
+
+const geometry = new MeshLineGeometry();
+geometry.setPoints(points);
+const mesh = new THREE.Mesh(geometry, mat);
+scene.add(mesh);
+
+function updatePoints(t: number) {
+  for (let i = 0; i < 1000; i++) {
+    points[i].y = Math.cos(i * 3.14 / freq + 0.01 + t * 0.001);
+  }
+  geometry.setPoints(points, (p: number) => p * width);
+}
+
+camera.position.z = 3;
+
+function animate(t: number) {
   requestAnimationFrame(animate);
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  updatePoints(t);
 
   renderer.render(scene, camera);
 }
 
-animate();
+animate(0);
 
 globalThis.window.addEventListener("resize", () => {
   camera.aspect = globalThis.window.innerWidth / globalThis.window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(globalThis.window.innerWidth, globalThis.window.innerHeight);
+});
+
+globalThis.window.addEventListener("mousemove", (e) => {
+  freq = e.clientX / 4;
+  width = e.clientY / 100;
 });
