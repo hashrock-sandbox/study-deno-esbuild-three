@@ -19,7 +19,6 @@
   <body>
     <script src="./app.js"></script>
     <script>
-      console.log(new URL(location).hostname);
       if (new URL(location).hostname === "localhost") {
         let version = null;
         let es = new EventSource("/alive");
