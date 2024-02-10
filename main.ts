@@ -20,7 +20,11 @@ const result = await esbuild.build({
 const BUILD_VERSION = new Date().toISOString();
 let timerId: number | undefined = undefined;
 
-Deno.serve((req: Request) => {
+Deno.serve({
+  onListen() {
+    console.log("http://localhost:8000/");
+  }
+},(req: Request) => {
   if(new URL(req.url).pathname === "/alive") {
     const body = new ReadableStream({
       start(controller) {
