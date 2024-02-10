@@ -3,7 +3,8 @@
     "dev": "deno run -A --watch=src/ main.ts"
   },
   "imports": {
-    "esbuild": "https://deno.land/x/esbuild@v0.20.0/mod.js"
+    "esbuild": "https://deno.land/x/esbuild@v0.20.0/mod.js",
+    "three": "https://esm.sh/three@0.161.0"
   },
   "lock": false
 }

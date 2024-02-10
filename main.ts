@@ -1,17 +1,19 @@
-import * as esbuild from "esbuild";
-import {
-  serveDir,
-} from "https://deno.land/std@0.207.0/http/file_server.ts";
+/// <reference no-default-lib="true" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+/// <reference lib="dom.asynciterable" />
+/// <reference lib="deno.ns" />
 
-let result = await esbuild.build({
+import * as esbuild from "esbuild";
+import { denoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
+import { serveDir } from "https://deno.land/std@0.207.0/http/file_server.ts";
+
+await esbuild.build({
+  plugins: [...denoPlugins()],
   entryPoints: ["src/app.ts"],
   bundle: true,
   outdir: "dist",
 });
-if (result.errors.length > 0) {
-  console.error(result.errors);
-  Deno.exit(1);
-}
 
 Deno.serve((req: Request) => {
   return serveDir(req, {
