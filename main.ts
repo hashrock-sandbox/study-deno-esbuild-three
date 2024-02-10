@@ -23,9 +23,9 @@ let timerId: number | undefined = undefined;
 Deno.serve({
   onListen() {
     console.log("http://localhost:8000/");
-  }
-},(req: Request) => {
-  if(new URL(req.url).pathname === "/alive") {
+  },
+}, (req: Request) => {
+  if (new URL(req.url).pathname === "/alive") {
     const body = new ReadableStream({
       start(controller) {
         controller.enqueue(`data: ${BUILD_VERSION}\nretry: 100\n\n`);
@@ -46,7 +46,6 @@ Deno.serve({
     });
   }
 
-  
   return serveDir(req, {
     fsRoot: "dist",
   });
