@@ -9,7 +9,9 @@ import { denoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.t
 import { serveDir } from "https://deno.land/std@0.207.0/http/file_server.ts";
 
 await esbuild.build({
-  plugins: [...denoPlugins()],
+  plugins: [...denoPlugins({
+    configPath: new URL("./deno.json", import.meta.url).pathname
+  })],
   entryPoints: ["src/app.ts"],
   bundle: true,
   outdir: "dist",
