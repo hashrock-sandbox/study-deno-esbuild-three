@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    body {
-      background-color: #f0f0f0;
-    }
-  </style>
-</head>
-<body>
-  <script src="./app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      body {
+        background-color: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="./app.js"></script>
+    <script>
+      console.log(new URL(location).hostname);
+      if (new URL(location).hostname === "localhost") {
+        let version = null;
+        let es = new EventSource("/alive");
+        es.addEventListener("close", function listener(e) {
+          location.reload();
+        });
+        es.addEventListener("message", function listener(e) {
+          if (version && version !== e.data) {
+            this.removeEventListener("message", listener);
+            location.reload();
+          }
+          version = e.data;
+        });
+      }
+    </script>
+  </body>
 </html>
