@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "dev": "deno run -A --watch=src/ main.ts"
+  },
+  "imports": {
+    "esbuild": "https://deno.land/x/esbuild@v0.20.0/mod.js"
+  }
+}
